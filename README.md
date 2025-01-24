@@ -17,5 +17,5 @@ Found 8 events.
 (60.00%) Collecting for [33276762-33279762]
 (75.00%) Collecting for [33279762-33282762]
 (90.00%) Collecting for [33282762-33284762]
-(100.00%) Finished
+(100.00%) Finished - found 8 events.
 ```

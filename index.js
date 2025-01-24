@@ -15,9 +15,14 @@ const SLEEP_TIME_MS = 2000;
 
 const ABI = require('./abi.json');
 
+
+let eventsFound = 0;
 // Write logs to file
 async function writeLogs(logs, contract, fromBlock, toBlock) {
-    if (logs.length) console.log(`Found ${logs.length} events.`);
+    if (logs.length) {
+        console.log(`Found ${logs.length} events.`);
+        eventsFound += logs.length;
+    }
 
     // Decode each event
     const events = logs.map((log) => {
@@ -78,7 +83,7 @@ async function fetchEvents() {
         });
         await writeLogs(logs, contract, block, END_BLOCK);
 
-        console.info('(100.00%) Finished');
+        console.info(`(100.00%) Finished - found ${eventsFound} events.`);
     } catch (error) {
         console.error('Error fetching events:', error);
     }
