@@ -17,7 +17,7 @@ const ABI = require('./abi.json');
 
 // Write logs to file
 async function writeLogs(logs, contract, fromBlock, toBlock) {
-    console.log(`Found ${logs.length} events.`);
+    if (logs.length) console.log(`Found ${logs.length} events.`);
 
     // Decode each event
     const events = logs.map((log) => {
@@ -31,7 +31,6 @@ async function writeLogs(logs, contract, fromBlock, toBlock) {
     // Save events to file
     const record = `\nBLOCKS: ${fromBlock}-${toBlock}\n${JSON.stringify(events, null, 2)}`
     fs.appendFileSync(OUTPUT_FILE, record);
-    console.log(`Events saved to ${OUTPUT_FILE}`);
 }
 
 function getProgressPercents(block) {
@@ -50,15 +49,16 @@ async function fetchEvents() {
         // console.log(`Fetching events for signature: ${EVENT_SIGNATURE}`);
         // console.log(`Using topic0: ${topic0}`);
 
+        console.log(`Start collecting [${START_BLOCK}-${END_BLOCK}]...`)
         const estimatedTimeMs = (END_BLOCK - START_BLOCK) / BLOCKS_STEP * SLEEP_TIME_MS;
-        console.log(`Estimated time: ${(estimatedTimeMs / 1000 / 60).toFixed(2)} minutes`);
+        console.log(`Estimated time: ${(estimatedTimeMs / 1000 / 60).toFixed(2)} minutes.\n`);
 
         // Fetch logs in steps
         let block;
         for (block = START_BLOCK; block + BLOCKS_STEP < END_BLOCK; block += BLOCKS_STEP) {
             const fromBlock = block;
             const toBlock = block + BLOCKS_STEP;
-            console.log(`(${getProgressPercents(block)}%) Collecting for [${fromBlock}, ${toBlock}]`);
+            console.log(`(${getProgressPercents(block)}%) Collecting for [${fromBlock}-${toBlock}]`);
             const logs = await provider.getLogs({
                 fromBlock,
                 toBlock,
@@ -69,7 +69,7 @@ async function fetchEvents() {
             await new Promise((resolve) => setTimeout(resolve, SLEEP_TIME_MS));
         }
 
-        console.log(`Finally - (${getProgressPercents(block)}%) Collecting for [${block}, ${END_BLOCK}]`);
+        console.log(`(${getProgressPercents(block)}%) Collecting for [${block}-${END_BLOCK}]`);
         const logs = await provider.getLogs({
             fromBlock: block,
             toBlock: END_BLOCK,
@@ -78,7 +78,7 @@ async function fetchEvents() {
         });
         await writeLogs(logs, contract, block, END_BLOCK);
 
-        console.info('(100%) Finished');
+        console.info('(100.00%) Finished');
     } catch (error) {
         console.error('Error fetching events:', error);
     }
