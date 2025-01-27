@@ -1,8 +1,12 @@
 # events-fetcher
 A simple script for parsing events from a smart contract.  
-* `npm run start`
+1. `npm ci`
+2. Fill out the `.env` file using `.env.xmpl` as a template.
+3. Populate your contracts ABI into `abis/main.abi.json`.
+4. If you would like to combine it with another ABI (a rare case), populate `abis/additional.abi.json` with it.
+3. `npm run start`
 
-Make sure you have filled the initial variables with your values.
+**If you are constantly getting nulls instead of valid events, check the provided ABIs.**
 
 Expected output:
 ```
