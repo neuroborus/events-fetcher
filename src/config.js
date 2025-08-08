@@ -25,14 +25,17 @@ const isCombinedAbi = process.env.IS_COMBINED_ABI;
 
 const eventSignature = process.env.EVENT_SIGNATURE;
 
+const includeTimestamp = process.env.INCLUDE_TIMESTAMP;
+
 export default {
     rpcUrl,
     contractAddress,
     startBlock: parseInt(startBlock, 10),
     endBlock: parseInt(endBlock, 10),
     outputFile,
-    blocksStep: blocksStep ? parseInt(blocksStep, 10) : 3000,
+    blocksStep: blocksStep ? parseInt(blocksStep, 10) : 5000,
     sleepTimeMs: sleepTimeMs ? parseInt(sleepTimeMs, 10) : 1000,
-    isCombinedAbi: (isCombinedAbi && isCombinedAbi.toLowerCase === 'true') ? true : false,
+    isCombinedAbi: (isCombinedAbi && isCombinedAbi.toLowerCase() === 'true') ? true : false,
     eventSignature,
+    includeTimestamp: (includeTimestamp && includeTimestamp.toLowerCase() === 'true') ? true : false,
 }

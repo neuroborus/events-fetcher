@@ -37,7 +37,7 @@ async function fetchEvents() {
                 address: config.contractAddress,
                 topics: topic0 ? [topic0] : undefined,
             });
-            await processLogs(logs, contract, fromBlock, toBlock);
+            await processLogs(logs, contract, fromBlock, toBlock, provider);
             await new Promise((resolve) => setTimeout(resolve, config.sleepTimeMs));
         }
 
@@ -49,7 +49,7 @@ async function fetchEvents() {
             address: config.contractAddress,
             topics: topic0 ? [topic0] : undefined,
         });
-        await processLogs(logs, contract, block, config.endBlock);
+        await processLogs(logs, contract, block, config.endBlock, provider);
 
         console.info(`(100.00%) Finished - found ${getEventsValue()} events.`);
     } catch (error) {
